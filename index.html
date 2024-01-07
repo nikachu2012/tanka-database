@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>短歌データベース</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+</head>
+
+<body>
+    作者: <a href="https://x.com/nikachu2012" target="_blank">nikachu2012</a>
+    <h1>全短歌データベース</h1>
+    No.1からNo.2541044919482166115870724009569688211683154782153706221816224911(31音の場合)の短歌を収録しています。<br>
+    全俳句データベースとの互換性は皆無です。<br>
+    国語や短歌の授業は一切覚えていないので間違えている部分があれば指摘ください。<br>
+
+    <h2>完全一致検索</h2>
+    <div style="display: flex;">
+        <input type="text" id="fullmatch_input"><button onclick="fullmatch_pushed()">検索</button>
+    </div>
+    <div>
+        <input type="checkbox" id="fullmatch_kugiri" name="kugiri">
+        <label for="fullmatch_kugiri">先頭から5・7・5・7・7で区切る</label>
+    </div>
+
+
+    <div style="margin-top: 20px; visibility: hidden;" class="fullmatch_viewer">
+        <span style="font-size: large;" id="number">No. 810928</span><br>
+        <span style="font-size: x-large; font-weight: bold;" id="text">「」</span><br>
+        <a id="tweet" href="">Tweet</a>
+    </div>
+
+    <hr>
+
+    <h2>番号から</h2>
+    <div style="display: flex;">
+        <input type="text" id="fromnumber_input"><button onclick="fromnumber_pushed()">検索</button>
+    </div>
+    <div>
+        <input type="checkbox" id="fromnumber_kugiri" name="kugiri">
+        <label for="fromnumber_kugiri">先頭から5・7・5・7・7で区切る</label>
+    </div>
+
+
+    <div style="margin-top: 20px; visibility: hidden;" class="fromnumber_viewer">
+        <span style="font-size: large;" id="number">No. </span><br>
+        <span style="font-size: x-large; font-weight: bold;" id="text">「」</span><br>
+        <a id="tweet" href="">Tweet</a>
+    </div>
+
+    <script>
+        const validator = /^[あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをんがぎぐげござじずぜぞだぢづでどばびぶべぼぱぴぷぺぽぁぃぅぇぉゃゅょっ]*$/gm
+        const onmatch = /[あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをんがぎぐげござじずぜぞだぢづでどばびぶべぼぱぴぷぺぽ][ぁぃぅぇぉゃゅょっ]*/gm;
+
+        const base = 126n
+
+
+        const db = {
+            "0": "あ",
+            "1": "い",
+            "2": "う",
+            "3": "え",
+            "4": "お",
+            "5": "か",
+            "6": "き",
+            "7": "く",
+            "8": "け",
+            "9": "こ",
+            "10": "さ",
+            "11": "し",
+            "12": "す",
+            "13": "せ",
+            "14": "そ",
+            "15": "た",
+            "16": "ち",
+            "17": "つ",
+            "18": "て",
+            "19": "と",
+            "20": "な",
+            "21": "に",
+            "22": "ぬ",
+            "23": "ね",
+            "24": "の",
+            "25": "は",
+            "26": "ひ",
+            "27": "ふ",
+            "28": "へ",
+            "29": "ほ",
+            "30": "ま",
+            "31": "み",
+            "32": "む",
+            "33": "め",
+            "34": "も",
+            "35": "や",
+            "36": "ゆ",
+            "37": "よ",
+            "38": "ら",
+            "39": "り",
+            "40": "る",
+            "41": "れ",
+            "42": "ろ",
+            "43": "わ",
+            "44": "を",
+            "45": "ん",
+            "46": "が",
+            "47": "ぎ",
+            "48": "ぐ",
+            "49": "げ",
+            "50": "ご",
+            "51": "ざ",
+            "52": "じ",
+            "53": "ず",
+            "54": "ぜ",
+            "55": "ぞ",
+            "56": "だ",
+            "57": "ぢ",
+            "58": "づ",
+            "59": "で",
+            "60": "ど",
+            "61": "ば",
+            "62": "び",
+            "63": "ぶ",
+            "64": "べ",
+            "65": "ぼ",
+            "66": "ぱ",
+            "67": "ぴ",
+            "68": "ぷ",
+            "69": "ぺ",
+            "70": "ぽ",
+            "71": "きゃ",
+            "72": "きゅ",
+            "73": "きょ",
+            "74": "しゃ",
+            "75": "しゅ",
+            "76": "しょ",
+            "77": "ちゃ",
+            "78": "ちゅ",
+            "79": "ちょ",
+            "80": "にゃ",
+            "81": "にゅ",
+            "82": "にょ",
+            "83": "ひゃ",
+            "84": "ひゅ",
+            "85": "ひょ",
+            "86": "みゃ",
+            "87": "みゅ",
+            "88": "みょ",
+            "89": "ぎゃ",
+            "90": "ぎゅ",
+            "91": "ぎょ",
+            "92": "じゃ",
+            "93": "じゅ",
+            "94": "じょ",
+            "95": "ぢゃ",
+            "96": "ぢゅ",
+            "97": "ぢょ",
+            "98": "ひゃ",
+            "99": "ひゅ",
+            "100": "ひょ",
+            "101": "びゃ",
+            "102": "びゅ",
+            "103": "びょ",
+            "104": "ぴゃ",
+            "105": "ぴゅ",
+            "106": "ぴょ",
+            "107": "みゃ",
+            "108": "みゅ",
+            "109": "みょ",
+            "110": "りゃ",
+            "111": "りゅ",
+            "112": "りょ",
+            "113": "ふぁ",
+            "114": "ふぃ",
+            "115": "ふぇ",
+            "116": "ふぉ",
+            "117": "てぃ",
+            "118": "でぃ",
+            "119": "つぁ",
+            "120": "つぃ",
+            "121": "つぇ",
+            "122": "つぉ",
+            "123": "でゃ",
+            "124": "でゅ",
+            "125": "でょ",
+        }
+
+        const nToDec = function (digits, base) {
+            let num = 0n;
+            digits.forEach(element => {
+                num = num * base + element
+            });
+            return num
+        }
+
+        function decToN(num, base) {
+            let result = []
+            let digit;
+
+            let buf = num;
+
+            while (buf > 0) {
+                digit = buf % base
+                result = db[String(digit)] + result
+                buf = buf / base
+            }
+            return result
+        }
+        // 126進
+
+        const oncount = (text) => {
+            return text.match(onmatch).length
+        }
+
+        const hiraganaToDec = (text) => {
+            const hiraganaFindDec = Object.keys(db).find((v) => db[v] == text);
+            if (hiraganaFindDec !== "") {
+                return BigInt(hiraganaFindDec)
+            }
+            else {
+                return false
+            }
+        }
+
+
+        const convert57577 = (matched) => {
+            let result = "";
+
+            for (let index = 0; index < matched.length; index++) {
+                result += matched[index]
+                if (index == 4 || index == 11 || index == 16 || index == 23) {
+                    result += " "
+                }
+            }
+
+            return result
+        }
+
+        const fullmatch_pushed = () => {
+            const text = document.querySelector("#fullmatch_input").value;
+            if (text === "") {
+                return
+            }
+
+            if (text.match(validator).length == 1) {
+                let matched = text.match(onmatch)
+                let matchedToDecArray = []
+
+                if (matched.length !== 31) {
+                    alert("音数が31音ではありません。正しく処理されない可能性があります。")
+                }
+
+                matched.forEach((e, i) => {
+                    matchedToDecArray.push(hiraganaToDec(e))
+                })
+
+                let tankaNumber = nToDec(matchedToDecArray, base)
+
+                document.querySelector(".fullmatch_viewer > #number").textContent = "No. " + String(tankaNumber);
+
+                if (document.querySelector("#fullmatch_kugiri").checked) {
+                    let converted = convert57577(matched);
+
+                    document.querySelector(".fullmatch_viewer > #text").textContent = converted;
+
+                }
+                else {
+                    document.querySelector(".fullmatch_viewer > #text").textContent = text;
+                }
+                document.querySelector(".fullmatch_viewer").style.visibility = "visible";
+
+            }
+            else {
+                alert("ひらがな以外を入力しないでください")
+                return
+            }
+        }
+
+        const a31padding = (text) => {
+            return Array(31 - text.length).fill("あ").concat(text)
+        }
+
+        const fromnumber_pushed = () => {
+            let input
+            try {
+                input = BigInt(document.querySelector("#fromnumber_input").value);
+            } catch (error) {
+                alert("数字以外を入力しないでください")
+            }
+
+            if (0n < input && input < 129266770433004033931339268867046939669343015949953145233395941376n) {
+                document.querySelector(".fromnumber_viewer > #number").textContent = "No. " + String(input);
+                const gotData = decToN(input, base);
+                let matched = gotData.match(onmatch)
+
+                if (document.querySelector("#fromnumber_kugiri").checked) {
+                    let converted = convert57577(a31padding(matched));
+
+                    document.querySelector(".fromnumber_viewer > #text").textContent = converted;
+
+                }
+                else {
+                    document.querySelector(".fromnumber_viewer > #text").textContent = a31padding(matched).join("");
+                }
+                document.querySelector(".fromnumber_viewer").style.visibility = "visible";
+            }
+            else{
+                alert("最大数を超えているか、負の数が入力されています")
+            }
+
+        }
+    </script>
+</body>
+
+</html>
