@@ -265,13 +265,13 @@
                     let converted = convert57577(matched);
 
                     document.querySelector(".fullmatch_viewer > #text").textContent = converted;
-                    document.querySelector(".fullmatch_viewer > #share").href = (`https://twitter.com/share?url=https://tankadb.nikachu.net&text=No.${String(tankaNumber)}の短歌「${converted}」`);
+                    document.querySelector(".fullmatch_viewer > #share").href = (`https://twitter.com/share?url=https://tankadb.nikachu.net?id=${String(tankaNumber)}&text=No.${String(tankaNumber)}の短歌「${converted}」`);
 
 
                 }
                 else {
                     document.querySelector(".fullmatch_viewer > #text").textContent = text;
-                    document.querySelector(".fullmatch_viewer > #share").href = (`https://twitter.com/share?url=https://tankadb.nikachu.net&text=No.${String(tankaNumber)}の短歌「${text}」`);
+                    document.querySelector(".fullmatch_viewer > #share").href = (`https://twitter.com/share?url=https://tankadb.nikachu.net?id=${String(tankaNumber)}&text=No.${String(tankaNumber)}の短歌「${text}」`);
 
                 }
                 document.querySelector(".fullmatch_viewer").style.visibility = "visible";
@@ -304,13 +304,13 @@
                     let converted = convert57577(a31padding(matched));
 
                     document.querySelector(".fromnumber_viewer > #text").textContent = converted;
-                    document.querySelector(".fromnumber_viewer > #share").href = (`https://twitter.com/share?url=https://tankadb.nikachu.net&text=No.${String(input)}の短歌「${converted}」`);
+                    document.querySelector(".fromnumber_viewer > #share").href = (`https://twitter.com/share?url=https://tankadb.nikachu.net?id=${String(input)}&text=No.${String(input)}の短歌「${converted}」`);
 
 
                 }
                 else {
                     document.querySelector(".fromnumber_viewer > #text").textContent = a31padding(matched).join("");
-                    document.querySelector(".fromnumber_viewer > #share").href = (`https://twitter.com/share?url=https://tankadb.nikachu.net&text=No.${String(input)}の短歌「${a31padding(matched).join("")}」`);
+                    document.querySelector(".fromnumber_viewer > #share").href = (`https://twitter.com/share?url=https://tankadb.nikachu.net?id=${String(input)}&text=No.${String(input)}の短歌「${a31padding(matched).join("")}」`);
 
                 }
                 document.querySelector(".fromnumber_viewer").style.visibility = "visible";
@@ -319,6 +319,16 @@
                 alert("最大数を超えているか、負の数が入力されています")
             }
 
+        }
+
+        let url = new URL(window.location.href);
+
+        let params = url.searchParams;
+
+        if (params.get("id")){
+            document.querySelector("#fromnumber_input").value = params.get("id")
+
+            fromnumber_pushed()
         }
     </script>
 </body>
