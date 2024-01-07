@@ -294,7 +294,7 @@
                 alert("数字以外を入力しないでください")
             }
 
-            if (0n < input && input < 129266770433004033931339268867046939669343015949953145233395941376n) {
+            if (0n <= input && input < 129266770433004033931339268867046939669343015949953145233395941376n) {
                 document.querySelector(".fromnumber_viewer > #number").textContent = "No. " + String(input);
                 const gotData = decToN(input, base);
                 let matched = gotData.match(onmatch)
