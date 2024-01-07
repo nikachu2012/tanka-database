@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>短歌データベース</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+
 </head>
 
 <body>
@@ -28,7 +29,8 @@
     <div style="margin-top: 20px; visibility: hidden;" class="fullmatch_viewer">
         <span style="font-size: large;" id="number">No. 810928</span><br>
         <span style="font-size: x-large; font-weight: bold;" id="text">「」</span><br>
-        <a id="tweet" href="">Tweet</a>
+        <a href="https://twitter.com/share?url=https://tankadb.nikachu.net&amp;text=短歌データベース" rel="nofollow"
+            target="_blank" id="share">Twitterでシェア</a>
     </div>
 
     <hr>
@@ -46,7 +48,8 @@
     <div style="margin-top: 20px; visibility: hidden;" class="fromnumber_viewer">
         <span style="font-size: large;" id="number">No. </span><br>
         <span style="font-size: x-large; font-weight: bold;" id="text">「」</span><br>
-        <a id="tweet" href="">Tweet</a>
+        <a href="https://twitter.com/share?url=https://tankadb.nikachu.net&amp;text=短歌データベース" rel="nofollow"
+            target="_blank" id="share">Twitterでシェア</a>
     </div>
 
     <script>
@@ -262,10 +265,14 @@
                     let converted = convert57577(matched);
 
                     document.querySelector(".fullmatch_viewer > #text").textContent = converted;
+                    document.querySelector(".fullmatch_viewer > #share").href = (`https://twitter.com/share?url=https://tankadb.nikachu.net&text=No.${String(tankaNumber)}の短歌「${converted}」`);
+
 
                 }
                 else {
                     document.querySelector(".fullmatch_viewer > #text").textContent = text;
+                    document.querySelector(".fullmatch_viewer > #share").href = (`https://twitter.com/share?url=https://tankadb.nikachu.net&text=No.${String(tankaNumber)}の短歌「${text}」`);
+
                 }
                 document.querySelector(".fullmatch_viewer").style.visibility = "visible";
 
@@ -297,14 +304,18 @@
                     let converted = convert57577(a31padding(matched));
 
                     document.querySelector(".fromnumber_viewer > #text").textContent = converted;
+                    document.querySelector(".fromnumber_viewer > #share").href = (`https://twitter.com/share?url=https://tankadb.nikachu.net&text=No.${String(input)}の短歌「${converted}」`);
+
 
                 }
                 else {
                     document.querySelector(".fromnumber_viewer > #text").textContent = a31padding(matched).join("");
+                    document.querySelector(".fromnumber_viewer > #share").href = (`https://twitter.com/share?url=https://tankadb.nikachu.net&text=No.${String(input)}の短歌「${a31padding(matched).join("")}」`);
+
                 }
                 document.querySelector(".fromnumber_viewer").style.visibility = "visible";
             }
-            else{
+            else {
                 alert("最大数を超えているか、負の数が入力されています")
             }
 
