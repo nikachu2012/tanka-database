@@ -205,16 +205,17 @@
         }
 
         function decToN(num, base) {
-            let result = []
+            let result = ""
             let digit;
 
             let buf = num;
 
-            while (buf > 0) {
+            do {
                 digit = buf % base
                 result = db[String(digit)] + result
                 buf = buf / base
-            }
+            } while (buf > 0);
+
             return result
         }
         // 126進
@@ -333,7 +334,7 @@
 
         let params = url.searchParams;
 
-        if (params.get("id")){
+        if (params.get("id")) {
             document.querySelector("#fromnumber_input").value = params.get("id")
 
             fromnumber_pushed()
